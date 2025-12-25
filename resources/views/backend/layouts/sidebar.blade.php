@@ -5,7 +5,7 @@
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">Ticket <sup></sup></div>
         </a>
 
         <!-- Divider -->
@@ -13,49 +13,39 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            @php
-                $user = Auth::user();
-            @endphp
-            @if ($user && $user->role == 1)
-                {{-- Admin Dashboard Link --}}
+            @if (Auth::check() && Auth::user()->role == 2)
+                <a class="nav-link" href="{{ route('staff.dashboard') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            @else
                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            @elseif ($user && $user->role == 2)
-                {{-- Student Dashboard Link --}}
-                <a class="nav-link" href="{{ route('student.dashboard') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Admin Dashboard</span>
+                </a>
             @endif
-
         </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider">
 
-        @if ($user && $user->role == 1)
+        @if (Auth::check() && Auth::user()->role == 1)
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.course.index') }}">
+                <a class="nav-link" href="{{ route('staffs.index') }}">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Course</span></a>
+                    <span>Staffs</span></a>
             </li>
-
-
-            <!-- Divider -->
+            <hr class="sidebar-divider">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('tasks.index') }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tasks</span></a>
+            </li>
             <hr class="sidebar-divider d-none d-md-block">
         @endif
-        @if ($user && $user->role == 2)
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('student.courses') }}">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>My Courses</span></a>
-            </li>
+        <!-- Divider -->
 
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-        @endif
-        <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>

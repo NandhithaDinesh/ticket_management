@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Authentication;
 use App\Http\Controllers\Course;
+use App\Http\Controllers\Staff;
+use App\Http\Controllers\Task;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -9,20 +11,18 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/register',[Authentication::class,'register'])->name('register');
-Route::post('/register',[Authentication::class,'registerPost'])->name('register.post');
-Route::get('/',[Authentication::class,'login'])->name('login');
-Route::post('/login',[Authentication::class,'loginPost'])->name('login.post');
+Route::get('/', [Authentication::class, 'login'])->name('login');
+Route::post('/login', [Authentication::class, 'loginPost'])->name('login.post');
 
 Route::middleware('auth')->group(function () {
-    
-   Route::get('/admin/dashboard',[Authentication::class,'adminDashboard'])->name('admin.dashboard');
-   Route::resource('/admin/course',Course::class)->names('admin.course');
-   Route::get('/student/dashboard',[Authentication::class,'studentDashboard'])->name('student.dashboard');
-   Route::post('/student/enroll/{id}',[Course::class,'enroll'])->name('student.enroll');
-   Route::get('/student/courses',[Course::class,'myCourses'])->name('student.courses');
+
+   Route::get('/admin/dashboard', [Authentication::class, 'adminDashboard'])->name('admin.dashboard');
+   Route::get('/staff/dashboard', [Authentication::class, 'staffDashboard'])->name('staff.dashboard');
+   Route::resource('/staffs', Staff::class);
+   Route::resource('/tasks', Task::class);
+   Route::get('/staff/tasks/{id}', [Task::class, 'showTaskDetails'])->name('staff.tasks.show');
+   Route::post('/staff/tasks/{id}/update-status', [Task::class, 'updateTaskStatus'])->name('staff.tasks.updateStatus');
 });
 
 
-Route::get('/logout',[Authentication::class,'logout'])->name('logout');
-require __DIR__.'/api.php';
+Route::get('/logout', [Authentication::class, 'logout'])->name('logout');
